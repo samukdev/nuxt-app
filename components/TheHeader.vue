@@ -1,5 +1,5 @@
 <template lang="pug">
-  section(class="mx-auto py-md py-5 uppercase tracking-widerst font-montserrat text-gray-800")
+  section(class="mx-auto py-5 uppercase tracking-widerst font-montserrat text-gray-800")
     NuxtLink(to="/" class="flex items-center")
       img(
         src="~assets/logo/logo.svg"

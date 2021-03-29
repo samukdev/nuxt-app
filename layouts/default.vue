@@ -1,10 +1,21 @@
 <template lang="pug">
-  div(class="flex flex-col" style="height: 100vh;") 
+  div(class="flex flex-col lg:bg-gray-50" style="height: 100vh;") 
     TheHeader(class="flex-min")
-    Nuxt(class="flex-grow")
+    div(class="flex items-center flex-row w-full h-full" class="container mx-auto")
+      div(class="lg:flex-1 hidden-desktop")
+        img(src="/svg/what.svg" class="mb-5 pl-10")
+      div(class="flex-1 w-full h-full flex justify-center items-center")
+        div(style="max-width: 400px; max-height: 700px" class="flex w-full flex-col  lg:px-8 lg:py-8 lg:shadow-lg lg:rounded-md lg:bg-white")
+          Nuxt(class="flex-grow w-full")
 </template>
 
 <style>
+@media (max-width: 1024px) {
+  .hidden-desktop {
+    display: none;
+  }
+}
+
 html {
   font-family: 'Oswald';
   font-size: 16px;
