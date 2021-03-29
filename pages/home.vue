@@ -35,6 +35,7 @@
 
 <script>
 export default {
+  transition: 'home',
   data() {
     return {
       thumbs: [

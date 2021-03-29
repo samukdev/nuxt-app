@@ -1,5 +1,5 @@
 <template lang="pug">
-  form(class="container min-w-full flex-col" @submit.prevent="teste()")
+  form(class="container min-w-full flex-col" @submit.prevent="goToLoginPage()")
     div(id="content" class="min-w-full px-4 py-2 flex-grow")
       div(class="flex flex-center flex-col h-full")
         div(class="text-center flex-min pt-8")
@@ -32,6 +32,7 @@
 
 <script>
 export default {
+  transition: 'home',
   data() {
     return {
       inputs: [
@@ -72,6 +73,12 @@ export default {
         },
       ],
     }
+  },
+
+  methods: {
+    goToLoginPage() {
+      this.$router.push({ name: 'login' })
+    },
   },
 }
 </script>
