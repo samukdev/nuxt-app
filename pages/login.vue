@@ -1,7 +1,7 @@
 <template lang="pug">
   form(class="container min-w-full flex-col" @submit.prevent="login()")
     div(
-      class="min-w-full px-4 py-2 flex-grow"
+      class="min-w-full px-4 py-2 flex-grow flex flex-center"
       v-if="isLoading"
     )
       | Loading...
@@ -29,15 +29,11 @@
           div(class="text-base tracking-wider font-light text-gray-600")
             | Please, enter your info to continue.
         div(class="flex-grow flex items-center flex-col pt-16")
-          input(
+          app-input(
             v-for="input in inputs"
             :key="input.name"
             v-bind="input"
-            v-model="input.value"
-            class=`w-full px-3 py-3 my-2 placeholder-gray-300 border border-gray-300 rounded
-            focus:outline-none focus:ring focus:ring-blue-100 focus:border-blue-300
-            dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600
-            dark:focus:ring-gray-900 dark:focus:border-gray-500`
+            @input="(input.value = $event.target.value)"
           )
 
           div(class="w-full underline text-gray-400 font-light tracking-widerr text-sm text-center py-10")
@@ -48,7 +44,7 @@
             label="login"
           )
       div(id="action" class="min-w-full px-4 py-3")
-        div(class="w-full text-gray-400 font-light tracking-wider text-sm text-center py-5")
+        div(class="w-full text-gray-500 font-light tracking-wider text-sm text-center py-5")
           span Don't have an account yet?
           NuxtLink(to="/signup")
             span(class="text-blue-400 font-semibold px-1") Sign up
@@ -68,6 +64,7 @@ export default {
           placeholder: 'Username or Email',
           type: 'text',
           value: '',
+          error: '',
         },
         {
           name: 'password',
@@ -75,6 +72,7 @@ export default {
           placeholder: 'Password',
           type: 'password',
           value: '',
+          error: '',
         },
       ],
     }
@@ -113,6 +111,29 @@ export default {
       )
 
       if (!formIsOk) {
+        const formErrors = {
+          hasEmail: {
+            error: 'You must fill this field',
+            target: ['email'],
+          },
+          hasPassword: {
+            error: 'You must fill this field',
+            target: ['password'],
+          },
+        }
+
+        // Clear errors
+        this.inputs.forEach((input) => {
+          input.error = ''
+        })
+
+        Object.keys(formValidation).forEach((key) => {
+          formErrors[key].target.forEach((target) => {
+            target = this.inputs.find((input) => input.id === target)
+            target.error = formValidation[key] ? '' : formErrors[key].error
+          })
+        })
+
         return null
       } else {
         const { email, password } = values

@@ -1,5 +1,5 @@
 <template lang="pug">
-  div(class="flex flex-col lg:bg-gray-50" style="height: 100vh;") 
+  div(class="flex flex-col lg:bg-blue-100" style="height: 100vh;") 
     TheHeader(class="flex-min")
     div(class="flex items-center flex-row w-full h-full" class="container mx-auto")
       div(class="lg:flex-1 hidden-desktop")

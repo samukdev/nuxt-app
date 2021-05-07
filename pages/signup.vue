@@ -1,7 +1,7 @@
 <template lang="pug">
   form(class="container min-w-full flex-col" @submit.prevent="signUp()")
     div(
-      class="min-w-full px-4 py-2 flex-grow"
+      class="min-w-full px-4 py-2 flex-grow flex flex-center"
       v-if="isLoading"
     )
       | Loading...
@@ -41,15 +41,11 @@
           div(class="text-base tracking-wider font-light text-gray-600")
             | Let's create an account for you!
         div(class="flex-grow flex items-center flex-col pt-10")
-          input(
+          app-input(
             v-for="input in inputs"
             :key="input.name"
             v-bind="input"
-            v-model="input.value"
-            class=`w-full px-3 py-3 my-2 placeholder-gray-300 border border-gray-300 rounded
-            focus:outline-none focus:ring focus:ring-blue-100 focus:border-blue-300
-            dark:bg-gray-700 dark:text-white dark:placeholder-gray-500 dark:border-gray-600
-            dark:focus:ring-gray-900 dark:focus:border-gray-500`
+            @input="(input.value = $event.target.value)"
           )
           div(id="action" class="w-full pt-5")
             ButtonPrimary(
@@ -57,7 +53,7 @@
               class="align-bottom min-w-full my-1"
               label="sign up"
             )
-            div(class="w-full text-gray-400 font-light tracking-wider text-sm text-center py-5")
+            div(class="w-full text-gray-500 font-light tracking-wider text-sm text-center py-5")
               span Already have an account?
               NuxtLink(to="/login")
                 span(class="text-blue-400 font-semibold px-1") Log in
@@ -79,8 +75,7 @@ export default {
           placeholder: 'First Name',
           type: 'text',
           value: '',
-          error: false,
-          errorMessage: null,
+          error: '',
         },
         {
           name: 'email',
@@ -88,8 +83,7 @@ export default {
           placeholder: 'Email',
           type: 'text',
           value: '',
-          error: false,
-          errorMessage: null,
+          error: '',
         },
         {
           name: 'password',
@@ -97,8 +91,7 @@ export default {
           placeholder: 'Password',
           type: 'password',
           value: '',
-          error: false,
-          errorMessage: null,
+          error: '',
         },
         {
           name: 'confirm_password',
@@ -106,8 +99,7 @@ export default {
           placeholder: 'Confirm Password',
           type: 'password',
           value: '',
-          error: false,
-          errorMessage: null,
+          error: '',
         },
       ],
     }
@@ -139,9 +131,9 @@ export default {
       const formValidation = {
         hasFirstName: !!values.firstName,
         hasEmail: !!values.email,
+        passwordMatches: values.password === values.confirmPassword,
         hasPassword: !!values.password,
         hasConfirmPassword: !!values.confirmPassword,
-        passwordMatches: values.password === values.confirmPassword,
       }
 
       const formIsOk = Object.keys(formValidation).every(
@@ -149,6 +141,46 @@ export default {
       )
 
       if (!formIsOk) {
+        const formErrors = {
+          hasFirstName: {
+            key: 'hasFirstName',
+            error: 'You must fill this field',
+            target: ['firstName'],
+          },
+          hasEmail: {
+            error: 'You must fill this field',
+            target: ['email'],
+          },
+          passwordMatches: {
+            error: `The passwords don't match`,
+            target: ['confirmPassword', 'password'],
+          },
+          hasPassword: {
+            error: 'You must fill this field',
+            target: ['password'],
+          },
+          hasConfirmPassword: {
+            error: 'You must fill this field',
+            target: ['confirmPassword'],
+          },
+        }
+
+        // Clear errors
+        this.inputs.forEach((input) => {
+          input.error = ''
+        })
+
+        Object.keys(formValidation).forEach((key) => {
+          formErrors[key].target.forEach((target) => {
+            target = this.inputs.find((input) => input.id === target)
+            target.error = formValidation[key]
+              ? target.error
+                ? target.error
+                : null
+              : formErrors[key].error
+          })
+        })
+
         return null
       } else {
         const { email, password } = values
