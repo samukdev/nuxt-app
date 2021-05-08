@@ -1,10 +1,11 @@
 <template lang="pug">
-  form(class="container min-w-full flex-col" @submit.prevent="signUp()")
+  form(class="container min-w-full flex-col lg:px-8" @submit.prevent="signUp()")
     div(
       class="min-w-full px-4 py-2 flex-grow flex flex-center"
       v-if="isLoading"
     )
-      | Loading...
+      div(class="column full-width")
+        AppSpinner(class="mx-3" :size="90")
     div(
       class="min-w-full px-4 py-2 flex-grow"
       v-else-if="sucess"

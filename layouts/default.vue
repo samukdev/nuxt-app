@@ -5,7 +5,7 @@
       div(class="lg:flex-1 hidden-desktop")
         img(src="/svg/what.svg" class="mb-5 pl-10")
       div(class="flex-1 w-full h-full flex justify-center items-center")
-        div(style="max-width: 400px; max-height: 700px" class="flex w-full flex-col  lg:px-8 lg:py-8 lg:shadow-lg lg:rounded-md lg:bg-white")
+        div(style="max-width: 400px; max-height: 700px" class="flex w-full flex-col lg:py-8 lg:shadow-lg lg:rounded-md lg:bg-white")
           Nuxt(class="flex-grow w-full")
 </template>
 

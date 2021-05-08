@@ -1,10 +1,11 @@
 <template lang="pug">
-  form(class="container min-w-full flex-col" @submit.prevent="login()")
+  form(class="container min-w-full flex-col lg:px-8" @submit.prevent="login()")
     div(
-      class="min-w-full px-4 py-2 flex-grow flex flex-center"
+      class="min-w-full px-4 py-2 flex-grow flex items-center justify-center text-xl"
       v-if="isLoading"
-    )
-      | Loading...
+    ) 
+      div(class="column full-width")
+        AppSpinner(class="mx-3" :size="90")
     div(
       class="min-w-full px-4 py-2 flex-grow"
       v-else-if="error"
@@ -56,7 +57,7 @@ export default {
   data() {
     return {
       error: null,
-      isLoading: null,
+      isLoading: false,
       inputs: [
         {
           name: 'email',
