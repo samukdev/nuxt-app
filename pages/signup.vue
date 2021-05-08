@@ -1,7 +1,7 @@
 <template lang="pug">
   form(class="container min-w-full flex-col lg:px-8" @submit.prevent="signUp()")
     div(
-      class="min-w-full px-4 py-2 flex-grow flex flex-center"
+      class="min-w-full px-4 py-2 flex-grow flex items-center justify-center text-xl"
       v-if="isLoading"
     )
       div(class="column full-width")
@@ -195,8 +195,39 @@ export default {
 
           this.sucess = true
         } catch (err) {
-          this.error =
-            err.message || 'Something went wrong, please try again later...'
+          const signupErrors = {
+            INVALID_EMAIL: {
+              error: 'Invalid email',
+              target: ['email'],
+            },
+            INVALID_PASSWORD: {
+              error: 'Invalid password',
+              target: ['password'],
+            },
+            EMAIL_NOT_FOUND: {
+              error: 'User not registered, sign up instead',
+              target: ['email'],
+            },
+            'WEAK_PASSWORD : Password should be at least 6 characters': {
+              error: 'Password must be at least 6 characters long',
+              target: ['password'],
+            },
+          }
+
+          // Clear errors
+          this.inputs.forEach((input) => {
+            input.error = ''
+          })
+
+          if (signupErrors[err.message]) {
+            signupErrors[err.message].target.forEach((target) => {
+              target = this.inputs.find((input) => input.id === target)
+              target.error = signupErrors[err.message].error
+            })
+          } else {
+            this.error =
+              err.message || 'Something went wrong, please try again later...'
+          }
         }
 
         this.isLoading = false

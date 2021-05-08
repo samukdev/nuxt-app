@@ -39,7 +39,7 @@ export const actions = {
       console.log(responseData)
 
       const error = new Error(
-        responseData.message ||
+        responseData.error.message ||
           'Something went wrong, please try again later...'
       )
 
@@ -76,7 +76,7 @@ export const actions = {
       console.log(responseData)
 
       const error = new Error(
-        responseData.message ||
+        responseData.error.message ||
           'Something went wrong, please try again later...'
       )
 

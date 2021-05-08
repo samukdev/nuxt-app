@@ -148,8 +148,35 @@ export default {
 
           this.handleLogin()
         } catch (err) {
-          this.error =
-            err.message || 'Something went wrong, please try again later...'
+          const loginErrors = {
+            INVALID_EMAIL: {
+              error: 'Invalid email',
+              target: ['email'],
+            },
+            INVALID_PASSWORD: {
+              error: 'Invalid password',
+              target: ['password'],
+            },
+            EMAIL_NOT_FOUND: {
+              error: 'User not registered, sign up instead',
+              target: ['email'],
+            },
+          }
+
+          // Clear errors
+          this.inputs.forEach((input) => {
+            input.error = ''
+          })
+
+          if (loginErrors[err.message]) {
+            loginErrors[err.message].target.forEach((target) => {
+              target = this.inputs.find((input) => input.id === target)
+              target.error = loginErrors[err.message].error
+            })
+          } else {
+            this.error =
+              err.message || 'Something went wrong, please try again later...'
+          }
         }
 
         this.isLoading = false
